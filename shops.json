@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Raj Shoes",
+    "pincode": "421003",
+    "category": "shoes",
+    "price": "1499",
+    "link": "https://shoplocalhub.in/raj-shoes"
+  },
+  {
+    "name": "Fashion Feet",
+    "pincode": "421003",
+    "category": "shoes",
+    "price": "1799",
+    "link": "https://shoplocalhub.in/fashion-feet"
+  }
+]
