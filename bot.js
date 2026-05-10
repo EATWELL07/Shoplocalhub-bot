@@ -5,10 +5,13 @@ const shops = require('./shops.json');
 
 const app = express();
 
+const { Client, LocalAuth } = require('whatsapp-web.js');
+
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
         headless: true,
+        executablePath: '/opt/render/.cache/puppeteer/chrome/linux-148.0.7778.97/chrome-linux64/chrome',
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     }
 });
