@@ -12,6 +12,8 @@ const client = new Client({
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
 }
+});
+
 
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
