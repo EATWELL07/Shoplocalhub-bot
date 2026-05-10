@@ -5,43 +5,33 @@ const shops = require('./shops.json');
 
 const app = express();
 
-const PORT = process.env.PORT || 3000;
-
-// WhatsApp Client
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-}
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    }
 });
 
-// QR Code
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
-    console.log('Scan the QR code above');
+    console.log('Scan QR Code');
 });
 
-// Bot Ready
 client.on('ready', () => {
-    console.log('WhatsApp Bot is Ready ✅');
+    console.log('WhatsApp Bot Ready ✅');
 });
 
-// Messages
 client.on('message', async (message) => {
 
     const text = message.body.toLowerCase().trim();
 
-    console.log('Message:', text);
-
-    // Shoes query
     if (text.includes('shoes')) {
 
-        message.reply('Please share your pincode 😊');
+        message.reply('Please send your pincode 😊');
 
     }
 
-    // Pincode check
     else if (/^\d{6}$/.test(text)) {
 
         const matchingShops = shops.filter(
@@ -50,12 +40,12 @@ client.on('message', async (message) => {
 
         if (matchingShops.length > 0) {
 
-            let reply = 'Best nearby shops 😊\n\n';
+            let reply = 'Nearby Shops 😊\n\n';
 
             matchingShops.forEach((shop, index) => {
 
                 reply += `${index + 1}. ${shop.name}
-₹${shop.price} onwards
+₹${shop.price}
 ${shop.link}
 
 `;
@@ -66,30 +56,29 @@ ${shop.link}
 
         } else {
 
-            message.reply('No nearby shops found 😔');
+            message.reply('No shops found 😔');
 
         }
 
     }
 
-    // Default reply
     else {
 
         message.reply(
-            'Welcome to ShopLocalHub 🚀\n\nType:\n"I want shoes"'
+            'Welcome to ShopLocalHub 🚀\nType "shoes"'
         );
 
     }
 
 });
 
-// Initialize WhatsApp
 client.initialize();
 
-// Express Server
 app.get('/', (req, res) => {
     res.send('Bot Running ✅');
 });
+
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
