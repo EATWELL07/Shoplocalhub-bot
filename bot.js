@@ -5,6 +5,9 @@ const shops = require('./shops.json');
 
 const app = express();
 
+const PORT = process.env.PORT || 3000;
+
+// WhatsApp Client
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
@@ -12,32 +15,33 @@ const client = new Client({
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     }
 });
-    authStrategy: new LocalAuth()
-});
 
+// QR Code
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
     console.log('Scan the QR code above');
 });
 
+// Bot Ready
 client.on('ready', () => {
     console.log('WhatsApp Bot is Ready ✅');
 });
 
+// Messages
 client.on('message', async (message) => {
 
     const text = message.body.toLowerCase().trim();
 
     console.log('Message:', text);
 
-    // If customer asks for shoes
+    // Shoes query
     if (text.includes('shoes')) {
 
         message.reply('Please share your pincode 😊');
 
     }
 
-    // If message is a 6-digit pincode
+    // Pincode check
     else if (/^\d{6}$/.test(text)) {
 
         const matchingShops = shops.filter(
@@ -60,9 +64,7 @@ ${shop.link}
 
             message.reply(reply);
 
-        }
-
-        else {
+        } else {
 
             message.reply('No nearby shops found 😔');
 
@@ -80,12 +82,15 @@ ${shop.link}
     }
 
 });
+
+// Initialize WhatsApp
 client.initialize();
 
+// Express Server
 app.get('/', (req, res) => {
     res.send('Bot Running ✅');
 });
 
-app.listen(3000, () => {
-    console.log('Server started on port 3000');
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
