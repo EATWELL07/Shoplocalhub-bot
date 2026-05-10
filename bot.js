@@ -4,8 +4,7 @@ const express = require('express');
 const shops = require('./shops.json');
 
 const app = express();
-
-const { Client, LocalAuth } = require('whatsapp-web.js');
+const PORT = process.env.PORT || 3000;
 
 const client = new Client({
     authStrategy: new LocalAuth(),
@@ -18,7 +17,7 @@ const client = new Client({
 
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
-    console.log('Scan QR Code');
+    console.log('Scan the QR code');
 });
 
 client.on('ready', () => {
@@ -33,9 +32,7 @@ client.on('message', async (message) => {
 
         message.reply('Please send your pincode 😊');
 
-    }
-
-    else if (/^\d{6}$/.test(text)) {
+    } else if (/^\d{6}$/.test(text)) {
 
         const matchingShops = shops.filter(
             shop => shop.pincode === text
@@ -59,17 +56,13 @@ ${shop.link}
 
         } else {
 
-            message.reply('No shops found 😔');
+            message.reply('No nearby shops found 😔');
 
         }
 
-    }
+    } else {
 
-    else {
-
-        message.reply(
-            'Welcome to ShopLocalHub 🚀\nType "shoes"'
-        );
+        message.reply('Type "I want shoes"');
 
     }
 
@@ -80,8 +73,6 @@ client.initialize();
 app.get('/', (req, res) => {
     res.send('Bot Running ✅');
 });
-
-const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
