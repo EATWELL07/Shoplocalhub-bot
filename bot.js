@@ -1,23 +1,27 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const express = require('express');
+const puppeteer = require('puppeteer');
+
 const shops = require('./shops.json');
 
 const app = express();
+
 const PORT = process.env.PORT || 3000;
 
 const client = new Client({
     authStrategy: new LocalAuth(),
-   puppeteer: {
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-}
+    puppeteer: {
+        browserWSEndpoint: undefined,
+        headless: true,
+        executablePath: puppeteer.executablePath(),
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    }
 });
-
 
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
-    console.log('Scan the QR code');
+    console.log('Scan the QR Code');
 });
 
 client.on('ready', () => {
@@ -30,9 +34,9 @@ client.on('message', async (message) => {
 
     if (text.includes('shoes')) {
 
-        message.reply('Please send your pincode 😊');
+        message.reply('Please share your pincode 😊');
 
-    } else if (/^\d{6}$/.test(text)) {
+    } else if (/^\\d{6}$/.test(text)) {
 
         const matchingShops = shops.filter(
             shop => shop.pincode === text
@@ -40,12 +44,12 @@ client.on('message', async (message) => {
 
         if (matchingShops.length > 0) {
 
-            let reply = 'Nearby Shops 😊\n\n';
+            let reply = 'Best nearby shops 😊\\n\\n';
 
             matchingShops.forEach((shop, index) => {
 
                 reply += `${index + 1}. ${shop.name}
-₹${shop.price}
+₹${shop.price} onwards
 ${shop.link}
 
 `;
@@ -62,7 +66,9 @@ ${shop.link}
 
     } else {
 
-        message.reply('Type "I want shoes"');
+        message.reply(
+            'Welcome to ShopLocalHub 🚀\\n\\nType: "I want shoes"'
+        );
 
     }
 
