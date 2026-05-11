@@ -47,6 +47,11 @@ client.on('auth_failure', msg => {
 });
 
 client.initialize();
+
+client.on('auth_failure', msg => {
+    console.error('Auth Failure:', msg);
+});
+
 client.initialize();
 
 client.on('message', async message => {
@@ -57,6 +62,10 @@ client.on('message', async message => {
         message.reply('Bot is working 🚀');
     }
 
+});
+
+app.get('/', (req, res) => {
+    res.send('Bot is running');
 });
 
 app.get('/', (req, res) => {
