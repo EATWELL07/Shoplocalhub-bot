@@ -3,7 +3,7 @@ const qr = require('qr-image');
 const fs = require('fs');
 const qrcode = require('qrcode-terminal');
 const express = require('express');
-
+app.use(express.static(__dirname));
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -21,15 +21,18 @@ const client = new Client({
     }
 });
 
-client.on('qr', (qrText) => {
-
+client.on('qr', (qrCode) => {
     console.log('QR RECEIVED');
 
-    const qr_svg = qr.image(qrText, { type: 'png' });
+    const qr_svg = qr.image(qrCode, { type: 'png' });
+    const qrPath = './qr.png';
 
-    qr_svg.pipe(fs.createWriteStream('qr.png'));
+    qr_svg.pipe(fs.createWriteStream(qrPath));
 
     console.log('QR IMAGE SAVED');
+
+    console.log(`OPEN THIS URL:
+https://shoplocalhub-bot.onrender.com/qr.png`);
 });
 client.on('ready', () => {
     console.log('WhatsApp Bot is Ready!');
