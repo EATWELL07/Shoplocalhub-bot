@@ -1,4 +1,6 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
+const qr = require('qr-image');
+const fs = require('fs');
 const qrcode = require('qrcode-terminal');
 const express = require('express');
 
@@ -19,11 +21,16 @@ const client = new Client({
     }
 });
 
-client.on('qr', (qr) => {
-    console.log('QR RECEIVED');
-    qrcode.generate(qr, { small: true });
-});
+client.on('qr', (qrText) => {
 
+    console.log('QR RECEIVED');
+
+    const qr_svg = qr.image(qrText, { type: 'png' });
+
+    qr_svg.pipe(fs.createWriteStream('qr.png'));
+
+    console.log('QR IMAGE SAVED');
+});
 client.on('ready', () => {
     console.log('WhatsApp Bot is Ready!');
 });
