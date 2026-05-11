@@ -67,7 +67,7 @@ client.on('disconnected', (reason) => {
     console.log('WHATSAPP DISCONNECTED:', reason);
 });
 
-client.on('message', async message => {
+client.on('message_create', async message => {
 
     console.log('MESSAGE:', message.body);
 
