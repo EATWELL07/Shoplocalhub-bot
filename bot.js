@@ -72,7 +72,9 @@ ${shop.link}
 
 });
 
-client.initialize();
+client.initialize().catch(err => {
+    console.error("WHATSAPP INIT ERROR:", err);
+});
 
 app.get('/', (req, res) => {
     res.send('Bot Running ✅');
