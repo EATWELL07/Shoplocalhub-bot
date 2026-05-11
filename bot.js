@@ -12,9 +12,10 @@ const PORT = process.env.PORT || 3000;
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
-        browserWSEndpoint: undefined,
-        headless: true,
-        executablePath: puppeteer.executablePath(),
+        puppeteer: {
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+}
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     }
 });
