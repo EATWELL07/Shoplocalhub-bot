@@ -3,9 +3,9 @@ const qr = require('qr-image');
 const fs = require('fs');
 const qrcode = require('qrcode-terminal');
 const express = require('express');
-app.use(express.static(__dirname));
-const app = express();
 
+const app = express();
+app.use(express.static(__dirname));
 const PORT = process.env.PORT || 3000;
 
 const client = new Client({
