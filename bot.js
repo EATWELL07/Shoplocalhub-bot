@@ -53,6 +53,29 @@ client.on('auth_failure', msg => {
 });
 
 client.initialize();
+client.initialize();
+
+client.on('ready', () => {
+    console.log('WHATSAPP READY');
+});
+
+client.on('authenticated', () => {
+    console.log('WHATSAPP AUTHENTICATED');
+});
+
+client.on('disconnected', (reason) => {
+    console.log('WHATSAPP DISCONNECTED:', reason);
+});
+
+client.on('message', async message => {
+
+    console.log('MESSAGE:', message.body);
+
+    if(message.body.toLowerCase() === 'hi'){
+        message.reply('Bot is working 🚀');
+    }
+
+});
 
 client.on('message', async message => {
 
