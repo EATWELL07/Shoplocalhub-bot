@@ -77,27 +77,10 @@ client.on('message', async message => {
 
 });
 
-client.on('message', async message => {
-
-    console.log('MESSAGE:', message.body);
-
-    if(message.body.toLowerCase() === 'hi'){
-        message.reply('Bot is working 🚀');
-    }
-
-});
-
 app.get('/', (req, res) => {
     res.send('Bot is running');
 });
 
-app.get('/', (req, res) => {
-    res.send('Bot is running');
-});
-
-app.get('/', (req, res) => {
-    res.send('Bot is running');
-});
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
