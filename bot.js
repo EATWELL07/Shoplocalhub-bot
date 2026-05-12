@@ -73,13 +73,13 @@ client.on('disconnected', (reason) => {
     console.log('WHATSAPP DISCONNECTED:', reason);
 });
 
-client.on('message_create', async message => {
+client.on('message', async message => {
 
-    console.log('MESSAGE:', message.body);
+    console.log('MESSAGE RECEIVED:', message.body);
 
     if (message.body.toLowerCase() === 'hi') {
 
-        message.reply('Bot is working 🚀');
+        await message.reply('Bot is working 🚀');
 
     }
 
